@@ -1,0 +1,56 @@
+[
+  {
+    "id": "duration-state",
+    "scenario": "A fictional warranty intake flow accepts a report when a symptom has persisted for at least 48 continuous hours. The person says it began Monday at 09:00, stopped for two hours Tuesday afternoon, and resumed Tuesday at 16:00. The current time is Thursday at 10:00 in the same timezone. Existing flow notes say 'check whether enough time has passed'. A saved transcript shows it treating the original start as continuous, then asking the same duration question three times after the person answered. The result should distinguish continuous duration from total elapsed time and avoid repeating the check after the state changes. All times and interruption facts above have already been collected.",
+    "criteria": [
+      "The proposed behavior uses the resumed start as the continuous interval and reaches the under-48-hours path for these facts. It does not treat elapsed time since Monday as continuous duration.",
+      "The fix represents the relevant state and threshold as an explicit decision, with a defined continuation or stopping path. It addresses the repeated check structurally rather than only rewriting vague instructions or selecting High reasoning.",
+      "It reuses the collected facts, explains when a fresh check would be warranted, and does not add another customer question for known inputs. Reasoning level, if discussed, is justified for the affected decision rather than applied everywhere."
+    ]
+  },
+  {
+    "id": "extraction-evidence",
+    "scenario": "A fictional delivery flow extracts delivery preference from customer wording. Two extraction steps are being reviewed. Step A maps an unambiguous explicit choice such as 'leave it at reception' to reception. Its 12 saved cases all pass at Normal. Step B must interpret messages such as 'not reception this time, same as my last order unless the driver cannot enter'. In a matched evaluation using the same inputs, Step B passes 5 of 12 cases at Normal and 11 of 12 at High. The remaining High failure relies on a previous-order preference that is absent from the available record. The extraction should preserve unresolved meaning instead of inventing a preference. Other flow steps have no observed reasoning-related failures.",
+    "criteria": [
+      "It leaves the proven straightforward Step A at Normal and uses the matched evidence to justify targeted High for Step B, rather than raising the entire playbook or assuming all extraction is deterministic.",
+      "It treats the absent prior-order preference as missing information with a defined fallback or focused clarification, rather than claiming High can recover unavailable facts or pretending the result is fully resolved.",
+      "It keeps extraction interpretation separate from deterministic routing or validation and proposes checking the changed behavior against both the ambiguous and straightforward controls."
+    ]
+  },
+  {
+    "id": "date-arithmetic",
+    "scenario": "A fictional equipment-return policy permits returns through the end of the thirtieth calendar day after delivery, excluding delivery day. All timestamps use UTC. The existing flow estimates eligibility from a sentence about the dates. The delivery date is 02/02/2028 and the request date is 03/03/2028. Policy and dates are already verified. The runtime capability inventory confirms that a code-tool mechanism can execute date arithmetic, but its actual callable schema has not been supplied in this exercise. Saved cases include leap years, month boundaries and the day immediately after the cutoff.",
+    "criteria": [
+      "It puts exact calendar arithmetic in the available code-tool mechanism, obtains or defers actual schema details, and does not invent a callable API or use model reasoning as the calculator.",
+      "It specifies a structured result feeding an explicit eligibility branch, including inclusive cutoff semantics. For the supplied facts it identifies 03/03/2028 as day 30 and eligible, with the following day outside the window.",
+      "It reuses known dates without another ASK and retains meaningful boundary, leap-year and unavailable-or-invalid-input handling. Raising reasoning alone is not accepted as the implementation."
+    ]
+  },
+  {
+    "id": "knowledge-only",
+    "scenario": "A fictional support agent gives the wrong description of a washable cover. The approved product guide says to wash it on a cold gentle cycle and air dry. The currently indexed article says to tumble dry on high. The transcript shows the agent accurately using that outdated article. There is no branching policy, calculation, external lookup, or missing customer fact in this question. The product and cover variant are already identified. The requested behavior is to answer from the approved care guide.",
+    "criteria": [
+      "It locates the change in knowledge content or indexing and verifies retrieval and the final answer against the approved guide, without blaming a correct extraction or inventing a reasoning defect.",
+      "It avoids adding a code tool, customer ASK, state variable, new branch, or High reasoning without a concrete need. It can describe a focused regression case without expanding the flow.",
+      "It preserves the supplied care instructions and distinguishes a proposed update from an applied or verified live change."
+    ]
+  },
+  {
+    "id": "capability-unavailable",
+    "scenario": "A fictional rental flow must calculate an exact overdue charge from a verified return timestamp and a tiered hourly policy. The current model estimates the total and sometimes disagrees at tier boundaries. In this exercise the runtime inventory reports only read access to playbook and knowledge content. There is no code execution tool, action creation, staging, or test execution capability available. A human can later use the dashboard. No exact timestamps or charge table are supplied for calculating a particular rental. Review the implementation approach within this capability boundary.",
+    "criteria": [
+      "It identifies deterministic computation with explicit tier boundaries as the desired design, and states that the unavailable capability blocks implementing or verifying that design here.",
+      "It gives a concrete dashboard or owner handoff describing required inputs, computed output, routing and boundary checks without inventing tool availability, callable schemas, charges, or successful staging/tests.",
+      "It does not substitute High reasoning or an unverified model estimate for the exact charge. A safe interim unresolved or human path is acceptable if clearly labelled."
+    ]
+  },
+  {
+    "id": "facts-already-present",
+    "scenario": "A fictional appliance flow routes safety support when the customer reports smoke; otherwise it gives the model-specific cleaning guide. The customer has already said 'Model Q7, no smoke, only a dusty filter'. Verified conversation state contains model=Q7 and smoke=false. A trace shows that the flow asks for the model again and then asks whether there is smoke, before reaching the correct guide. There is no conflicting or stale fact in the record, and no calculation is needed. The desired behavior should remain safe when a future conversation lacks or contradicts those facts.",
+    "criteria": [
+      "It consumes the verified model and explicit false value, skips both redundant questions for this conversation, and reaches the Q7 cleaning guide.",
+      "It distinguishes false from missing and retains focused collection or contradiction handling only when needed in a future conversation. It does not globally remove the safety decision or silently assume no smoke.",
+      "It fixes the input reuse and branch conditions rather than adding code, more questions or blanket High reasoning. Its check includes both the current populated state and a meaningful missing or conflicting state."
+    ]
+  }
+]

@@ -74,6 +74,11 @@ That gives the person a picture of what customers meet now.
 
 ## 2. Decide the size of the change
 
+Read `../author-playbook/references/implementation-strategy.md`. Record the
+selected and rejected options, evidence and acceptance checks. Internal state,
+branch and tool changes that preserve the approved conversation are implementation
+changes. Reuse existing authorization for the exact behavior already approved.
+
 - Wording or routing in one existing step, nothing else: change it, then run
   the saved cases for this use case. No board needed.
 - Anything that changes what the customer is asked, in what order, or what

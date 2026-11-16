@@ -79,7 +79,7 @@ Before you write a step:
 
 If the channel is voice (phone), load voice-playbook-builder for the voice checklist, patterns and sim testing, and build from it.
 
-Read the playbook authoring guide for platform detail (the runtime file
+Read `references/implementation-strategy.md` first. Read the playbook authoring guide for platform detail (the runtime file
 says where it is). Then work from the design, not from the last comment:
 - Map each bot turn to one step. One ASK collects one fact. When the board
   has a turn that lists several facts in one question (the person chose it),
@@ -100,43 +100,19 @@ says where it is). Then work from the design, not from the last comment:
 - Reuse their existing actions. Never invent one. If the design needs data no
   action returns, say so plainly and stop.
 - Branch with IF_ELSE on variables, two or three levels at most.
-- Build a simple SET or ASK at Reasoning level Normal and leave `reasoning_level`
-  off. A complicated one (several rules, a precedence order, a long list,
-  arithmetic, several variables at once) gets both levels tested before you
-  stage: load `ada-tune-reasoning-level`, run the step's own inputs at Normal
-  and at High, and keep the level that gets more of them right. On a tie keep
-  Normal, because High is slower and has no second model behind it. Test, don't
-  assume: in our runs High fixed date arithmetic and only added time elsewhere,
-  but those cases were easy. Put date arithmetic in a code tool (section 3).
 - Before you stage, read `references/build-pitfalls.md`. It lists the build
   mistakes that broke live playbooks (copying a variable, empty `else`
   branches, go-tos after an insert, `only_when_needed`, short-code matching)
   and the safe way to build each.
 
-## 3. When to use a code tool
+## 3. Choose the implementation
 
-Use a code tool for anything that must come out exactly the same every time.
-The step model is good at language and bad at exactness, so moving that work
-out keeps the steps short and the results stable.
+Read `references/implementation-strategy.md` before choosing steps or tools.
+It is the shared strategy for author-playbook, revise-playbook and test-and-fix.
+Record selected and rejected options, evidence and acceptance checks.
 
-| Use a code tool | Keep it in the step |
-|---|---|
-| Dates and times: parse, compare, add days, time zones, "before 06:00 counts as the day before" | Wording a question or an answer |
-| Formats: normalise a phone, reference or name; check a pattern | Understanding a free-text reply |
-| Arithmetic, totals, fees, eligibility thresholds | Choosing between a few meanings the customer might have |
-| Lookup tables (fare classes, region codes, price bands) | Saying sorry, explaining a policy from knowledge |
-| Reading a value out of an action's response | Summarising for a handoff |
-
-List the existing code tools first and reuse one if it fits. Give a new code
-tool one job, clear input and output names, and run it on sample input before
-a playbook calls it. Set its inputs with SET steps
-before the RUN step that calls it, because RUN does not fill code tool inputs
-itself.
-
-When the design emails the customer mid-chat, read
-`references/code-tool-email.md` before you write the tool. It covers
-`send_email`, branching on whether it sent, keeping a one-time code out of
-the agent's reach, and how to test a send.
+When the design emails the customer mid-chat, also read
+`references/code-tool-email.md`.
 
 ## 4. Push back on patches
 

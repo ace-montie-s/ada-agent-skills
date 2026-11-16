@@ -4,6 +4,12 @@ Each version has a section below. A push to `main` that changes the version
 creates a GitHub Release with that section as its notes. To get an email for
 each release, open the repo on GitHub, choose Watch, then Custom, then Releases.
 
+## 2026.11.16.2
+
+- Give author-playbook, revise-playbook and test-and-fix one shared implementation strategy for state, missing-input questions, branching, code tools, knowledge and selective reasoning tuning.
+- Require evidence for the chosen strategy, successful staging readback and separate evaluator and reviewer findings.
+- Add six customer-free implementation scenarios exercised through all three workflows, generating 18 behavioral eval cases. Package maintained eval assets with the plugin.
+
 ## 2026.11.16.1
 
 - Add `visualize-tests`: portable Ada themed HTML reviews of existing test results and complete transcripts, with English translations and findings beside the relevant turns.

@@ -115,7 +115,12 @@ Each round:
 1. **Diagnose.** Hand every failing case to diagnose-conversation and take back
    its diagnosis: the owning surface, the mechanism, the evidence. Group
    failures that share a cause, so one fix serves several cases.
-2. **Fix on a changeset.** Never edit live. Keep all fixes of the loop on one
+2. **Choose the implementation.** Read
+   `../author-playbook/references/implementation-strategy.md`. Assess knowledge,
+   SET state, missing-input ASK, branching, code tools and reasoning level. Log
+   selected and rejected options with evidence and acceptance checks.
+
+   **Fix on a changeset.** Never edit live. Keep all fixes of the loop on one
    changeset so they test and promote together.
    - Playbook steps, flow, exit or trigger: hand to revise-playbook and take
      back its staged changeset. It owns the redesign method.
@@ -129,15 +134,18 @@ Each round:
      cannot be tested on a changeset. Say so and get the person's yes first.
    - Action or platform fault: report what the action returned and stop that
      item. A config change cannot fix a broken endpoint.
+   Confirm staging succeeded and read back the changed entities before spending
+   runs. A rejected stage must not be followed by testing unchanged configuration.
 3. **Show the diff and wait.** Show the platform's own before and after. The
    person approves each staged fix.
 4. **Rerun the whole anchor on the changeset**: every case that failed and
    every case that passed before. A partial rerun hides regressions. Say the
    run count and quota, and run only on a yes.
 5. **Read the results.** Sort each failure into one kind:
-   - Got worse: passed on live, fails now. The change did it. Look here first.
-   - Same on live: fails on both. Report it as its own item and do not fix it
-     under this change.
+   - Observed regression: passed on live, fails now. Investigate first; trace
+     evidence and a matched rerun establish whether the change caused it.
+   - Same on live: fails on both. An anchored target remains a fix target.
+     An unrelated pre-existing failure is recorded separately and does not expand scope.
    - Case wrong: the judge's reason contradicts the transcript, or the criterion
      cannot hold. The person decides on rewording.
    - Works in part: some turns, branches or criteria now pass. Say which part is
@@ -166,7 +174,9 @@ Stop at the first of these and say which:
   means the diagnosis or the design is wrong, and more patches will not help.
 - **A fix changes the design.** If the fix changes what the customer is asked,
   in what order, or what they get, or the use case's goal moved, stop. Return
-  to design-conversation, so the person approves the new conversation. Then
+  to design-conversation, so the person approves the new conversation. Internal
+  SET, branching and tool changes that preserve the approved experience do not
+  require a new design. Reuse authorization for behavior already approved. Then
   update the saved cases to the new board before the loop resumes.
 - **A decision is the person's.** A wrong case, a goal conflict, a live-write
   fix or a held-back case waits for them.
