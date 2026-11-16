@@ -56,8 +56,15 @@ or capability that prevents a stronger conclusion.
                 *fixture["criteria"],
                 "It does not claim execution, tool schemas, test results or live changes that the exercise did not supply. It does not raise all steps to High or add ASK/code/branches everywhere as a generic recipe."
             ]
-            rubric = "---\ntype: llm\ncriteria: Chooses the smallest sufficient implementation from the evidence\n---\nPass only if ALL hold:\n"
-            rubric += "\n".join(f"{i}. {text}" for i, text in enumerate(criteria, 1)) + "\n"
+            # Claude's prose-grader parser reads criteria from frontmatter when
+            # present, replacing the Markdown body. Keep every acceptance item
+            # in that field so the judge receives the complete rubric.
+            acceptance = "Pass only if ALL hold:\n" + "\n".join(
+                f"{i}. {text}" for i, text in enumerate(criteria, 1)
+            )
+            rubric = "---\ntype: llm\ncriteria: |\n"
+            rubric += "\n".join(f"  {line}" for line in acceptance.splitlines())
+            rubric += "\n---\n"
             (graders / "implementation-outcome.md").write_text(rubric)
     return len(fixtures) * len(ENTRYPOINTS)
 
