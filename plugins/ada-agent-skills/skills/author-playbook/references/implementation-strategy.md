@@ -19,6 +19,7 @@ runtime supports it and whether an existing tool already does the job.
 | A fixed policy chooses the outcome | IF_ELSE on confirmed variables | Test below, at and above each boundary, plus unknown state |
 | Exact dates, arithmetic, normalization, validation or structured lookup | Reuse or create a small code tool, then branch on its result | Deterministic sample inputs, boundary cases, missing output and executor failure |
 | Language extraction or precedence rules produce wrong state | Simplify the extraction, then compare Normal and High if ambiguity remains | Same inputs and expected outputs at both levels, including latency |
+| A step answers from Knowledge, finds nothing, and apologises or asks "did that help?" | Exit on no answer (section below) | Reasoning log shows the search ran, no SEND or ASK from the playbook, and one reasoner reply |
 
 A numeric comparison on an already confirmed number can use a supported branch
 directly. It does not require a code tool. A knowledge-only gap does not require
@@ -50,6 +51,53 @@ If execution or tooling is unavailable, state that limit and use only a
 supported fallback. Never invent a schema, execution result or passing test.
 For knowledge, follow the runtime's retrieval limits and knowledge-set rules.
 A staged article is not evidence it was retrieved. Record its actual use.
+
+## Exit on no answer
+
+Use this when a playbook step answers from Knowledge and a failed lookup
+leaves the customer with "I can't find this" and a "did that help?" ask.
+Tested on a sandbox agent on 16/11/2026.
+
+1. SET one variable in reasoning mode, with no fallback. Instruction:
+   `Answer the customer's question using {{ search:knowledge }}. Write an
+   answer only if Knowledge states it.`
+2. IF the variable is null, RUN exit. Put no SEND before it.
+3. ELSE SEND the answer with `{{ variable:<id> }}`, then ASK if it helped.
+
+The reasoner then handles the turn with every playbook and article in reach.
+
+- Use one variable per SET. A SET that writes two or more variables never
+  searches and clears all of them.
+- Give it no fallback. A fallback makes the variable non-null, so the branch
+  never exits.
+- Use an explicit RUN exit. A playbook that runs to its last step is hidden
+  from the reasoner for one turn. An explicit exit is not.
+- The model decides "no answer". Near-miss results still wrote nothing, so
+  null means Knowledge does not state it.
+- The query reads the step instruction and the last 10 messages. Add
+  `{{ variable:<id> }}` to carry an earlier answer.
+- Three searches run per turn, shared with SEND steps. A fourth writes null.
+- Modular reasoner v2, headless runs and escalation playbooks never search,
+  so every run exits.
+- The flag `pb-v2-set-step-search` must be on. With it off the step writes
+  null every time. adacli cannot read the flag, so the test is the check.
+- After the exit the reasoner may answer, decline or start another playbook.
+  Promise the customer no route.
+
+Test three cases and read the reasoning log, not only the reply. Confirm the
+playbook ran, since another playbook can take the first turn. Run the
+unanswerable case more than once.
+
+| Case | Expect |
+|---|---|
+| Question Knowledge answers | Search, answer, then the ask |
+| In-scope question Knowledge cannot answer | Search, then no SEND or ASK from the playbook, and one reasoner reply |
+| Question another playbook owns | Exit, then that playbook's first step. Not yet tested |
+
+In author-playbook, use it instead of a scripted "can't find" line. In
+revise-playbook, use it when the diagnosis is an apology after an empty
+lookup. In test-and-fix, treat that failure as a known fix and run the three
+cases.
 
 ## Reasoning level
 

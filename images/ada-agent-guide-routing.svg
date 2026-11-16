@@ -61,7 +61,9 @@
 <rect class="pill" x="468" y="300" width="212" height="26" rx="13"/>
 <text class="mono" x="574" y="317" text-anchor="middle">test-and-fix</text>
 <rect class="pill" x="468" y="334" width="212" height="26" rx="13"/>
-<text class="mono" x="574" y="351" text-anchor="middle">revise-playbook</text>
+<text class="mono" x="574" y="351" text-anchor="middle">visualize-tests</text>
+<rect class="pill" x="468" y="368" width="212" height="26" rx="13"/>
+<text class="mono" x="574" y="385" text-anchor="middle">revise-playbook</text>
 <path class="line" d="M802,186 L802,214" marker-end="url(#a)"/>
 <rect class="head" x="696" y="216" width="212" height="36" rx="8"/>
 <text class="t" x="802" y="239" text-anchor="middle" font-size="14" font-weight="700">Improve</text>

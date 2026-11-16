@@ -4,6 +4,10 @@ Each version has a section below. A push to `main` that changes the version
 creates a GitHub Release with that section as its notes. To get an email for
 each release, open the repo on GitHub, choose Watch, then Custom, then Releases.
 
+## 2026.11.16.4
+
+- Add an "exit on no answer" strategy to the shared implementation strategy for author-playbook, revise-playbook and test-and-fix. When a Knowledge SET finds nothing, the playbook exits so the reasoner can answer or pick another playbook, instead of apologising and asking "did that help?".
+
 ## 2026.11.16.3
 
 - Require a post-promotion audit of testing changesets, with complete local backups before explicitly authorized deletion of owned, fully obsolete drafts.
