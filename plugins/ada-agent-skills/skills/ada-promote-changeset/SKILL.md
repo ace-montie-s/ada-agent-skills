@@ -75,15 +75,51 @@ exact error.
 
 ## 5. After it is live
 
+- Verify the platform reports `promoted` and read back the intended live changes.
+  A successful exit code, preview or `promoting` status is not proof. If promotion
+  failed or remains unverified, stop here without deleting any changeset.
 - Say in one sentence whether it went live, and when.
 - Start watching it with `ada-playbook-monitor-loop`, which holds the arms and the
   stop rule.
 - Record the changeset name, the promote time and the test numbers where this
   use case's notes live, or in your final message if nothing saves them.
 
+## 6. Audit and clean up obsolete drafts
+
+After every verified promotion, list all remaining testing changesets, including
+every page, and inspect their full staged content and rollout state. This audit
+is required even when nothing is eligible for deletion. Follow the selected
+runtime's cleanup procedure.
+
+Delete only drafts you staged for this work whose entire scope is proved
+superseded by the verified live change or no longer needed for testing. A name,
+age or shared entity alone does not prove ownership or obsolescence. Check the
+work's staging records, exact diff, outstanding tests and dependent work. Keep
+other people's drafts, active experiments or rollouts, promoted or revertable
+snapshots, and anything with ambiguous ownership, mixed scope or a remaining
+purpose. Never delete merely to reach a target slot count.
+
+Before deletion, save a restricted local backup of each candidate's exact full
+staged payload, metadata and diff, with its instance, ID and retrieval time.
+Verify the saved file is readable and complete. If the runtime cannot retrieve
+the complete payload, retain the draft. Record why the entire draft is obsolete
+and the authorization covering its deletion. Promotion approval alone does not
+authorize cleanup. An explicit cleanup instruction can cover the bounded set
+without another ask, subject to the runtime's confirmation gates.
+
+Re-fetch each candidate immediately before deleting it. If its content, status
+or rollout changed, retain it and report why. Delete eligible drafts individually
+through the documented preview and confirmation flow. Stop on a refusal or an
+unverified deletion, and retain the remaining candidates. Re-list every page
+afterward and verify the deleted IDs are absent from testing. Report backup
+locations, deleted IDs, retained IDs and reasons, and testing counts before and
+after. Report remaining slots only when the runtime exposes the applicable cap;
+otherwise say capacity is unknown. Keep backups out of public artifacts.
+
 ## Rules
 
 - You draft and test. The person promotes or rolls out.
 - Never promote someone else's changeset, or one you did not test this session.
 - Keep customer data, order numbers and personal details out of the summary.
-- Delete changesets you staged only for a test.
+- Never delete a test changeset outside step 6's ownership, backup, authorization
+  and verification checks.

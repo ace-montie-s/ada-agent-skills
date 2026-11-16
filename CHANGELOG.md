@@ -4,6 +4,12 @@ Each version has a section below. A push to `main` that changes the version
 creates a GitHub Release with that section as its notes. To get an email for
 each release, open the repo on GitHub, choose Watch, then Custom, then Releases.
 
+## 2026.11.16.3
+
+- Require a post-promotion audit of testing changesets, with complete local backups before explicitly authorized deletion of owned, fully obsolete drafts.
+- Preserve active experiments, other people's work, promoted snapshots and ambiguous drafts. Verify deletion and report retained IDs, testing counts and available capacity without assuming a slot cap.
+- Add CLI and MCP cleanup procedures that inspect the installed command or connected tool schema before acting. Skip cleanup when promotion is unsuccessful or unverified.
+
 ## 2026.11.16.2
 
 - Give author-playbook, revise-playbook and test-and-fix one shared implementation strategy for state, missing-input questions, branching, code tools, knowledge and selective reasoning tuning.

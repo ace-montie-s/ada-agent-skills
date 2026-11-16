@@ -13,7 +13,30 @@ instance comes first in every command, and there is no `--instance` flag.
 | The real diff | `adacli <instance> changesets get <id> --diff --json` for the full before and after of each field. The table view (`--diff` alone) shows IDs and can cut long fields short. See `readable-diff.md` |
 | Name an entity from its ID | `adacli <instance> playbooks get <id> --json` for a playbook. Other types: the same `get` on their command group (`knowledge`, `coaching`, `handoffs`, `glossary`, `variables`) |
 | Direct promote | `adacli <instance> changesets promote <id>` returns a preview. Applying it needs `--yes` and the `--token` from that preview, which only the person's go-ahead permits. Add `--json` and check that `status` is `promoted`. If live changed after the preview, the call returns `confirmation_required` with exit 0 and applies nothing |
-| Clean up a test stage | `adacli <instance> changesets delete <id> --yes` |
+| Preview deletion of an eligible obsolete draft | `adacli <instance> changesets delete <id> --json` |
+
+## Post-promotion cleanup
+
+First inspect the installed CLI's changeset help and the `list`, `get` and
+`delete` subcommand help. Confirm available pagination, full-detail output,
+rollout fields and deletion confirmation flags rather than assuming this
+reference matches the installed version. Do not guess an export command or a
+changeset cap.
+
+Use `changesets list --json`, following the returned pagination through all
+testing drafts. Retrieve each candidate with `changesets get <id> --json` and
+`changesets get <id> --diff --json`. Save the exact outputs to restricted local
+files before deletion. Check that these responses contain the complete staged
+entity snapshots, not just truncated field summaries. If not, retain the draft
+and report the missing backup capability. Apply step 6's eligibility checks.
+
+For each eligible candidate, re-fetch and compare the saved payload and state,
+then preview with `changesets delete <id> --json`. Show the IDs, reasons and
+backup paths covered by the cleanup authorization. Only when that authorization
+and the preview permit it, confirm with `changesets delete <id> --yes --json`,
+using any additional token required by the installed CLI. Check the JSON result,
+not just the exit code. A new warning or changed preview requires review, not a
+blind retry. Re-list all testing drafts and record the result required by step 6.
 
 ## Promote needs the person
 

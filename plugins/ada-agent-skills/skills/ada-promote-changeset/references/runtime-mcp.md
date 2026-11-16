@@ -15,7 +15,31 @@ the tool names.
 | Before and after on live traffic | `compare_changeset_metrics` once the draft has traffic |
 | Direct promote | `edit_agent_behavior` with `operation: promote` and `changeset_id`. The first call returns a Confirm/Cancel preview. Show it. Call again with `confirmed: true` only after the person says yes. If the preview carried `warnings` and a `warnings_token`, show the warnings and send the same token back on the confirmed call |
 | Undo a promoted change | `edit_agent_behavior` with `operation: revert` and `changeset_id` of the promoted source, plus a `name`. It creates a new `testing` changeset that inverts the source. Nothing goes live. Test it, then promote it as above |
-| Clean up a test stage | `edit_agent_behavior` with `operation: delete` and `changeset_id`. It previews first, like promote |
+| Preview deletion of an eligible obsolete draft | Inspect the available `edit_agent_behavior` schema for `operation: delete` and its confirmation fields. It previews first, like promote |
+
+## Post-promotion cleanup
+
+Inspect the actual connected schemas for `list_agent_changesets` and
+`edit_agent_behavior` before cleanup. Confirm pagination, full staged detail,
+rollout state and the supported deletion confirmation fields. Do not invent
+tool names, backup operations, tokens or capacity fields.
+
+List every page of testing changesets. Retrieve each candidate's full metadata,
+staged entity payloads and diff using the supported detail arguments, such as
+`changeset_id` and `include_diff` when present. Save the exact responses to
+restricted local files and verify they contain complete staged snapshots.
+If the tools expose only summaries or no full backup path, retain the draft
+and identify the dashboard or CLI step needed. Apply step 6's eligibility checks.
+
+Re-fetch each eligible candidate and compare its content and state to the
+backup. Preview deletion through `edit_agent_behavior` with `operation: delete`
+and its ID, only if the connected schema supports it. Show the preview with
+the deletion reasons and backup paths. Confirm only under the person's explicit
+cleanup authorization and the host's confirmation rules, using exactly the
+fields and any tokens returned by that schema and preview. A changed warning
+or refusal stops deletion. Verify the returned deletion result, then re-list
+all testing drafts and record the result required by step 6. If deletion is
+unavailable, report the retained IDs and the dashboard action; do not bypass it.
 
 ## Writes need the person
 
