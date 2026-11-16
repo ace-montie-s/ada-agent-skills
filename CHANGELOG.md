@@ -7,9 +7,8 @@ each release, open the repo on GitHub, choose Watch, then Custom, then Releases.
 ## 2026.11.16.1
 
 - Add `visualize-tests`: portable Ada themed HTML reviews of existing test results and complete transcripts, with English translations and findings beside the relevant turns.
-- Keep evaluator failures, reviewer concerns and test limitations separate. Preserve source case, run, turn and criterion identities.
+- Keep saved evaluator results, explicit reviewer failures, uncertain concerns and test limitations separate. A reviewer can fail a journey against an acceptance rule even when the saved evaluator passed. Preserve source case, run, turn and criterion identities.
 - Add case and turn comments, browser draft saving, copy and JSON export, and validated feedback import for the next iteration. Feedback stays local until the reviewer returns it.
-
 
 ## 2026.11.15.1
 

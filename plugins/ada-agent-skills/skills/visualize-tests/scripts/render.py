@@ -69,9 +69,14 @@ def validate(spec):
             if finding.get("criterion_id"):
                 require(finding["criterion_id"] in criteria_ids, "finding points to a missing criterion")
             if finding["kind"] == "failure":
-                require(finding.get("criterion_id") in criteria_ids, "failure needs a criterion_id; use concern for a reviewer observation")
-                criterion = next(c for c in case["criteria"] if c["id"] == finding["criterion_id"])
-                require(criterion["status"] == "fail", "failure must reference a failed criterion")
+                basis = finding.get("basis", "evaluator")
+                require(basis in {"evaluator", "reviewer"}, "invalid failure basis")
+                if basis == "reviewer":
+                    require(isinstance(finding.get("rule"), str) and bool(finding["rule"].strip()), "reviewer failure needs the acceptance rule it violates")
+                else:
+                    require(finding.get("criterion_id") in criteria_ids, "evaluator failure needs a criterion_id")
+                    criterion = next(c for c in case["criteria"] if c["id"] == finding["criterion_id"])
+                    require(criterion["status"] == "fail", "evaluator failure must reference a failed criterion")
             if finding.get("quote"):
                 turn = next(t for t in case["turns"] if t["id"] == finding["turn_id"])
                 require(finding["quote"] in turn["text"], "finding quote must match its original turn exactly")

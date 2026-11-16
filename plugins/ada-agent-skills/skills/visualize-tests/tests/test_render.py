@@ -80,6 +80,26 @@ class ReviewTests(unittest.TestCase):
         case.update(status="unknown", turns=[], findings=[], criteria=[])
         renderer.render(spec)
 
+    def test_reviewer_failure_preserves_saved_pass_and_requires_rule(self):
+        spec = example()
+        case = spec["cases"][0]
+        case["status"] = case["criteria"][0]["status"] = "pass"
+        finding = case["findings"][0]
+        finding.update(basis="reviewer")
+        with self.assertRaisesRegex(ValueError, "acceptance rule"):
+            renderer.render(spec)
+        finding["rule"] = "Give guidance and check elapsed time before offering support."
+        self.assertEqual(renderer.validate(spec)["cases"][0]["status"], "pass")
+        output = renderer.render(spec)
+        self.assertIn("Reviewer failed", output)
+        self.assertIn("Saved check:", output)
+
+    def test_unknown_failure_basis_rejected(self):
+        spec = example()
+        spec["cases"][0]["findings"][0]["basis"] = "invented"
+        with self.assertRaisesRegex(ValueError, "basis"):
+            renderer.render(spec)
+
     def test_duplicate_id_rejected(self):
         spec = example()
         spec["cases"].append(copy.deepcopy(spec["cases"][0]))
