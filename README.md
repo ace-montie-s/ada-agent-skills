@@ -9,7 +9,7 @@ The guide picks the right skill, so you do not need to remember the skills.
 |---|---|
 | Set up | `onboard-agent`, `configure-handoff`, `ada-custom-metrics-setup`, `setup-adacli`, `setup-ada-mcp` |
 | Build | `design-conversation`, `author-playbook`, `voice-playbook-builder`, `help-center-to-kb-playbooks`, `ada-image-cards`, `create-verification-skill` |
-| Fix | `diagnose-conversation`, `test-and-fix`, `revise-playbook` |
+| Fix | `diagnose-conversation`, `test-and-fix`, `visualize-tests`, `revise-playbook` |
 | Improve | `improve-agent`, `mine-human-agent-conversations`, `review-handoffs`, `prevent-handoffs`, `ada-custom-metrics-improve`, `ada-custom-metrics-loop` |
 | Operate | `ada-promote-changeset`, `ada-rollout-changeset`, `ada-playbook-monitor-loop`, `ada-report`, `troubleshoot`, `ada-tune-reasoning-level` |
 
@@ -49,6 +49,7 @@ instance.
 | `onboard-agent` | Set up a new agent stage by stage. It reads what is done and resumes where you stopped |
 | `configure-handoff` | Set up or fix handoff to Zendesk, Salesforce, Gladly, email and other platforms, one link of the chain at a time |
 | `test-and-fix` | Run a use case's tests, fix each failure on a changeset, and retest until all pass |
+| `visualize-tests` | Review existing test transcripts in Ada themed HTML, inspect highlighted failure reasons, and export comments on cases or individual turns for iteration |
 | `improve-agent` | Rank improvements across the agent by how much each moves handoffs, containment, CSAT and custom metrics |
 | `troubleshoot` | Answer an Ada platform or account question with steps, downtime risk, rollback and a source |
 | `ada-tune-reasoning-level` | Choose which SET and ASK steps run at Reasoning level High, test each on its own inputs, and stage the change |

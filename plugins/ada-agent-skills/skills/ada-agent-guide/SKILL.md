@@ -26,6 +26,7 @@ restate its steps here.
 | Changing or fixing an existing playbook | `revise-playbook` |
 | Why one conversation went wrong: a link, a wrong answer, a loop, an odd handoff | `diagnose-conversation` |
 | Failing tests, or a bad conversation to fix and retest until the use case passes | `test-and-fix` |
+| Reviewing existing test results as HTML, seeing failed turns, or commenting on test conversations | `visualize-tests` |
 | What to improve across the whole agent: handoffs, containment, CSAT and custom metrics together | `improve-agent` |
 | Why conversations hand off, counted by the recorded reason | `review-handoffs` |
 | What human agents do after a handoff, and which playbooks or articles could take it over | `mine-human-agent-conversations` |

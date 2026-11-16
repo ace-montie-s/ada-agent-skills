@@ -4,6 +4,13 @@ Each version has a section below. A push to `main` that changes the version
 creates a GitHub Release with that section as its notes. To get an email for
 each release, open the repo on GitHub, choose Watch, then Custom, then Releases.
 
+## 2026.11.16.1
+
+- Add `visualize-tests`: portable Ada themed HTML reviews of existing test results and complete transcripts, with English translations and findings beside the relevant turns.
+- Keep evaluator failures, reviewer concerns and test limitations separate. Preserve source case, run, turn and criterion identities.
+- Add case and turn comments, browser draft saving, copy and JSON export, and validated feedback import for the next iteration. Feedback stays local until the reviewer returns it.
+
+
 ## 2026.11.15.1
 
 - Reconcile the published plugin with the committed 13/11 conversation design improvements, preserving channel support, email code tools, handoff checks, SMS opt-outs and prevent-handoffs.
