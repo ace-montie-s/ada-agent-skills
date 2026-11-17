@@ -104,6 +104,10 @@ After Approve, follow author-playbook from step 2, with these differences:
 - Send every step's `reasoning_level` back as you read it. A rewrite that drops
   the field sets the step to Normal without a warning. When a step saves a wrong
   value, load `ada-tune-reasoning-level` before you rewrite its wording.
+- Before staging, run author-playbook's `scripts/check_playbook_text.py --base
+  <live.json> <draft.json>` and fix every FAIL in the text, not in the check.
+  It covers the name, the description, general instructions and every ASK, SEND
+  and SET text.
 - Save test cases only for scenarios that are new or changed. Keep the old
   ids for the rest, and update the use case's record.
 - Check old cases against the approved board before running.

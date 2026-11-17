@@ -4,6 +4,12 @@ Each version has a section below. A push to `main` that changes the version
 creates a GitHub Release with that section as its notes. To get an email for
 each release, open the repo on GitHub, choose Watch, then Custom, then Releases.
 
+## 2026.11.18.2
+
+- Add `author-playbook/scripts/check_playbook_text.py`, a linter for playbook prose: tags or dates in names, empty or labelled descriptions, descriptions that do not start "Use when", general instructions over 1,500 characters (fail over 4,000), history or justification notes in any text field, and step instructions too long to be one turn. `--base live.json draft.json` reports only what the draft adds.
+- author-playbook: general instructions hold only what is true for every step, a reasoning SET follows the few-lines rule, and playbook text never explains its own history. Run the linter before staging.
+- revise-playbook: run the linter with `--base` before staging and fix the text, not the check.
+
 ## 2026.11.18.1
 
 - Author, revise and test-and-fix now map playbook nodes and edges, including ASK retries, fallback consumers, variable state and parent/child boundaries.

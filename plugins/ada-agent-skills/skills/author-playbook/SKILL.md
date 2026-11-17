@@ -92,6 +92,15 @@ says where it is). Then work from the design, not from the last comment:
 - Write each step's instruction for the turn it produces, in a few lines. No
   rule lists. A step that needs "also include X, unless Y, but if Z" is a sign
   the logic belongs in a code tool or a branch.
+- General instructions hold only what is true for every step: tone, scope
+  and data limits. They go into every step's prompt, so a rule for one step
+  goes in that step, and branching goes in IF_ELSE or a code tool. A reasoning
+  SET instruction follows the same few-lines rule as ASK and SEND.
+- No playbook text explains its own history: no "added because", fix or
+  workaround notes, ticket ids or "SCOPING NOTE" blocks. The reasoner reads
+  every word on every turn. The reason belongs in the changeset and the task.
+  Run `scripts/check_playbook_text.py` on the draft before you stage and fix
+  every FAIL in the text, not in the check.
 - Choices: give an ASK `accepted_values` when the design shows `options`, and
   give every value a `quick_reply_labels` label of at most 20 characters, each
   one different. Buttons show on Web Chat and the Messaging SDK only. The docs
