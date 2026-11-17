@@ -104,11 +104,51 @@ class ZeroReaskFallThrough(unittest.TestCase):
         self.assertIn("run-refund", out.stdout)
 
 
-class AcceptAnyWording(unittest.TestCase):
-    def test_accept_any_is_now_a8(self):
-        rules = [r for _, r, _ in check.problems(ask(instruction="Accept any answer and move on."))]
-        self.assertIn("A8", rules)
-        self.assertNotIn("A4", rules)
+STORE_ANY = ("Ask in ONE short sentence whether that sorts it out.\n\nCAPTURE: store the "
+             "customer's next message exactly as they typed it, whatever it says. Never repeat "
+             "this question and never offer a list of options.")
+
+
+def rules(**extra):
+    return [r for _, r, _ in check.problems(ask(**extra))]
+
+
+class StoreAnyReply(unittest.TestCase):
+    def test_store_any_reply_is_not_flagged(self):
+        self.assertEqual(rules(instruction="Accept any answer and move on."), [])
+        self.assertEqual(rules(instruction=STORE_ANY), [])
+
+    def test_store_any_reply_clears_a4(self):
+        self.assertEqual(a4(playbook(ask(instruction=STORE_ANY), action())), [])
+        self.assertEqual(a4(playbook(ask(instruction="Accept any answer."), action())), [])
+
+
+class RepeatTheQuestion(unittest.TestCase):
+    def test_asking_to_repeat_fails(self):
+        self.assertIn("A3", rules(instruction="If unclear, repeat the question."))
+        self.assertIn("A3", rules(instruction="Do it now. Ask the same question again."))
+
+    def test_negated_repeat_passes(self):
+        for text in (STORE_ANY, "Do not repeat the question as it was.",
+                     "Avoid asking the same question again; reword it."):
+            self.assertNotIn("A3", rules(instruction=text), text)
+
+    def test_negation_in_an_earlier_sentence_does_not_count(self):
+        self.assertIn("A3", rules(instruction="Never guess. Repeat the question."))
+
+
+class WorkedOrNot(unittest.TestCase):
+    def yes_no(self, instruction):
+        return rules(instruction=instruction, accepted_values=["yes", "no"], fallback_value="no")
+
+    def test_already_answered_is_not_a_worked_question(self):
+        text = ("Do not ask something they have already answered. Capture whether they have "
+                "already submitted a claim - 'yes' if they have, 'no' if they have not.")
+        self.assertNotIn("A2", self.yes_no(text))
+
+    def test_did_it_work_without_problem_mapping_fails(self):
+        text = "Ask whether that answered their question. 'yes' if it did, 'no' if they want more."
+        self.assertIn("A2", self.yes_no(text))
 
 
 if __name__ == "__main__":

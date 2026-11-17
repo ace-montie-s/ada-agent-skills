@@ -18,16 +18,12 @@ Rules:
   A2  FAIL  a yes/no ASK never says that an error, problem or restriction means "no"
             (checked only when the question asks whether something worked or was done)
   A3  FAIL  the instruction tells the model to repeat the question as it was
-  A4  WARN  max_reask_attempts is 0 and the ask has no fallback value, and a later action
-            runs with no "is null" check on the variable in between. One non-answer
-            ("thanks, that's all", a bare "yes") leaves the variable empty and the
-            playbook moves on, so the action runs without it
-  A5  WARN  contextual ASK with values and no line on how to word a re-ask
+  A4  WARN  zero re-asks and no fallback, and a later action uses the variable with no
+            'is null' check. Skipped when the instruction stores any reply, because the
+            variable is then always filled
+  A5  WARN  contextual ASK with retries and no line on how to word a re-ask
   A6  WARN  no max re-ask attempts set (default is 3, so the customer is asked 4 times)
   A7  WARN  ASK with values and no fallback value
-  A8  WARN  the instruction says to accept any answer or never re-ask. The extraction
-            prompt then drops the off-topic and Q&A statuses for the step, though live
-            chats still answered side questions. Keep it only on purpose
 """
 import json
 import re
@@ -38,7 +34,7 @@ STATUS = {"did_not_answer", "did not answer"}
 QUOTES = "\"'“”‘’`"
 SUCCESS_Q = re.compile(
     r"\b(able to|were you able|did (it|that|this)|worked|work\b|success|solved|resolved|"
-    r"answered|helped|helpful|fixed|done|complete|go through|went through|received|get it)\b",
+    r"answer(?:ed)? (?:your|the|their) question|helped|helpful|fixed|done|complete|go through|went through|received|get it)\b",
     re.I)
 PROBLEM_WORDS = re.compile(
     r"\b(error|problem|issue|restriction|cannot|can't|can not|couldn't|could not|didn't|"
@@ -51,13 +47,15 @@ VERBATIM = re.compile(
     r"(repeat (the|your|this|that) (same |exact |original )?(question|ask)\b|"
     r"ask (the )?same question again|re-?ask (it )?(exactly|verbatim|word for word)|"
     r"(same|exact) (words|wording) (again|as before))", re.I)
+NEGATION = re.compile(r"\b(never|not|don't|do not|avoid|without)\b[^.;:\n]*$", re.I)
 # Wording that removes the off-topic and Q&A controls for the step
 # (extraction_system.jinja, STEP-INSTRUCTION PRECEDENCE).
 ACCEPT_ANY = re.compile(
     r"(accept any (answer|reply|response)|any (answer|reply|response) is (fine|ok|accepted)|"
     r"accept the first answer|capture the reply verbatim|never re-?ask|never ask again|"
     r"always set this variable and proceed|do not classify as a topic change|"
-    r"cannot be skipped|do not search knowledge)", re.I)
+    r"cannot be skipped|do not search knowledge|whatever (it|they) says?|"
+    r"store (the customer's|their) (next )?(message|reply) exactly)", re.I)
 
 
 def asks(node):
@@ -122,6 +120,10 @@ def playbooks(node):
     return found or [node]
 
 
+def asks_to_repeat(text):
+    return any(not NEGATION.search(text[:m.start()]) for m in VERBATIM.finditer(text))
+
+
 def unguarded_actions(doc):
     """(ask, variable, action) for each zero-re-ask ask with no fallback whose next action
     runs with no null check on the variable in between."""
@@ -135,6 +137,8 @@ def unguarded_in(steps):
     found = []
     for i, step in enumerate(steps):
         if step.get("type") != "ask" or step.get("max_reask_attempts") != 0:
+            continue
+        if ACCEPT_ANY.search(step.get("instruction") or ""):
             continue
         inputs = step.get("inputs") or [step]
         for inp in inputs:
@@ -209,12 +213,10 @@ def problems(step):
             if missing:
                 out.append(("FAIL", "A1", f"{missing!r} neither mapped nor named in the instruction"))
 
-    if VERBATIM.search(text):
+    if asks_to_repeat(text):
         out.append(("FAIL", "A3", "tells the model to repeat the question as it was"))
-    if ACCEPT_ANY.search(text):
-        out.append(("WARN", "A8", "accept-any-answer or never-re-ask wording"))
 
-    if values and not exact and step.get("question_phrasing") != "exact_words":
+    if not exact and step.get("max_reask_attempts") != 0:
         if not REASK_LINE.search(text):
             out.append(("WARN", "A5", "no line on how to word a re-ask"))
     if values and step.get("max_reask_attempts") is None:

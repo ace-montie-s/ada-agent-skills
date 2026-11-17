@@ -4,6 +4,12 @@ Each version has a section below. A push to `main` that changes the version
 creates a GitHub Release with that section as its notes. To get an email for
 each release, open the repo on GitHub, choose Watch, then Custom, then Releases.
 
+## 2026.11.18.3
+
+- `check_ask_instructions.py` A3 no longer fails an instruction that says *not* to repeat the question, such as "Never repeat this question".
+- A2 no longer treats "already answered" as a "did it work" question. It still checks "did that answer your question".
+- An ASK that stores any reply is a valid choice. The accept-any warning (A8) is removed, and A4 skips an ASK whose instruction stores any reply, because the variable is always filled.
+
 ## 2026.11.18.2
 
 - Add `author-playbook/scripts/check_playbook_text.py`, a linter for playbook prose: tags or dates in names, empty or labelled descriptions, descriptions that do not start "Use when", general instructions over 1,500 characters (fail over 4,000), history or justification notes in any text field, and step instructions too long to be one turn. `--base live.json draft.json` reports only what the draft adds.
