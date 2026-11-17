@@ -4,6 +4,12 @@ Each version has a section below. A push to `main` that changes the version
 creates a GitHub Release with that section as its notes. To get an email for
 each release, open the repo on GitHub, choose Watch, then Custom, then Releases.
 
+## 2026.11.17.1
+
+- Add a refute pass to test-and-fix: once every case passes, a fresh reviewer gets the raw diff, runs and reasoning logs and tries to break the fix. A BROKEN verdict counts as a failed round under the three-round cap. Issues the change did not introduce are reported as pre-existing and do not fail the round.
+- revise-playbook and ada-playbook-monitor-loop run the same pass from one shared checklist of 14 attack and design checks.
+- Hosts without subagents run the pass as a separate section in the same chat and say it is weaker evidence.
+
 ## 2026.11.16.4
 
 - Add an "exit on no answer" strategy to the shared implementation strategy for author-playbook, revise-playbook and test-and-fix. When a Knowledge SET finds nothing, the playbook exits so the reasoner can answer or pick another playbook, instead of apologising and asking "did that help?".

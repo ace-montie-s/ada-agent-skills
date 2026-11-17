@@ -109,6 +109,10 @@ After Approve, follow author-playbook from step 2, with these differences:
   old and new, on the draft and on live. Sort every failure with the table in
   author-playbook's `references/test-cases.md`. An old case that now fails is
   a finding to show, not to hide.
+- When the set passes on the draft, run the refute pass in
+  `../test-and-fix/references/refute-pass.md` on the raw diff and runs. A
+  BROKEN verdict sends you back to the rewrite. Inside test-and-fix, skip it
+  here, because that loop runs it once for the whole changeset.
 - End with a table of every case, old and new: live result, draft result,
-  and a link to each conversation, plus counts by kind. This is the required
+  and a link to each conversation, plus counts by kind and the refute verdict. This is the required
   last message. If you could not run the cases, say that first and say why.

@@ -136,11 +136,10 @@ goes to step 7 as a design change, with the person's go-ahead.
 4. **Keep the controls.** Run the control set on live before the change, then on
    the draft and on live after it. Add the finding's chats as cases. A control
    that regresses blocks the fix. Report failures by kind.
-5. **Try to break it.** Hand the raw diff and run evidence, not your summary, to
-   a fresh reviewer told to refute it: judge against Intended design, re-derive
-   the verdict from the reasoning log, reproduce the original failure, and look
-   for collateral damage. A fix that does not survive goes in the Fix log as a
-   dead end. Do not argue down a refutation.
+5. **Try to break it.** Run the refute pass in
+   `../test-and-fix/references/refute-pass.md`, with Intended design as the
+   anchor and the finding's chats as the original failures. A BROKEN verdict
+   goes in the Fix log as a dead end. Do not argue down a refutation.
 6. **Test before traffic.** Follow `ada-promote-changeset` step 1: the finding's chats
    plus a regression sample, draft against live.
 7. **Hand over a fix, not a suspicion:** the finding, 2 or 3 chat URLs, the owning

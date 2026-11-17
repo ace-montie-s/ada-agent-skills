@@ -164,11 +164,18 @@ Each round:
    Note it in the round log and hold that case until the person confirms.
 6. **Log the round** with the table in `references/round-log.md`: case,
    result, owning surface, fix, changeset. Post it in chat.
+7. **Refute a passing round.** When every anchored case passes, run the refute
+   pass in `references/refute-pass.md` before you stop. Hand over the raw diff,
+   runs and reasoning logs, never your summary. A BROKEN verdict counts as a
+   failed round: its attacks become the next round's targets. Do not argue a
+   refutation down. A pre-existing issue goes in the hand-over and does not
+   fail the round.
 
 ## 5. Stop
 
 Stop at the first of these and say which:
-- **All pass.** Every anchored case passes on the changeset. Go to step 6.
+- **All pass.** Every anchored case passes on the changeset and the refute
+  pass returns HOLDS. Go to step 6.
 - **Three rounds used.** Report what still fails, the cause for each, and what
   you would try next. Do not start a fourth round. Three rounds without a pass
   means the diagnosis or the design is wrong, and more patches will not help.
@@ -186,8 +193,8 @@ Stop at the first of these and say which:
 Never promote, even when the person asked you to. Every plan or status you
 write ends at this hand-over, never at "then I'll promote", so the person
 knows the last step is theirs. Give the person the changeset name, the final
-round table and the counts by kind ("targets fixed 4 of 4, controls worse 0 of
-6"). Hand the changeset to ada-promote-changeset, which checks it again, shows
+round table, the counts by kind ("targets fixed 4 of 4, controls worse 0 of
+6") and the refute verdict with any pre-existing issues it found. Hand the changeset to ada-promote-changeset, which checks it again, shows
 the diff and offers a direct promote or a rollout.
 
 If the loop stopped without a pass, leave the changeset in `testing`, say it
