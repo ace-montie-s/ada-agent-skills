@@ -4,6 +4,11 @@ Each version has a section below. A push to `main` that changes the version
 creates a GitHub Release with that section as its notes. To get an email for
 each release, open the repo on GitHub, choose Watch, then Custom, then Releases.
 
+## 2026.11.18.4
+
+- `check_ask_instructions.py` A4 flags an ASK that stores any reply again. Storing any reply is still a valid design, but a non-answer ("thanks, that's all", a bare "yes") is still classed `did_not_answer` and leaves the variable empty, so a later action with no `is null` check runs without it. The A4 line now says when the instruction stores any reply. build-pitfalls no longer lists "store any reply" as a fix.
+- New rule A9 (WARN): the instruction tells the model to write or output the bare word true or false ("Write exactly true if ..."). The model can send that word to the customer as its message. Say what to save ("Save true if ...") and add "never say true or false to the customer". A8 is not reused.
+
 ## 2026.11.18.3
 
 - `check_ask_instructions.py` A3 no longer fails an instruction that says *not* to repeat the question, such as "Never repeat this question".
