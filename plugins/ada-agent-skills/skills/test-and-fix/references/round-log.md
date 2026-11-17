@@ -27,8 +27,9 @@ Open for the person: <the decision, with a recommendation and why>
 - **Live**: the baseline result from round 0. It does not change between
   rounds.
 - **This round**: the result on the changeset, with a link to the conversation.
-- **Kind**: fixed, still failing, got worse, same on live, case wrong, works in
-  part, or not reached. Use the words of author-playbook's test-case rules.
+- **Kind**: fixed, still failing, same twice, got worse, same on live, case
+  wrong, works in part, or not reached. Use the words of author-playbook's
+  test-case rules.
 - **Owning surface**: from the diagnosis (playbook step, playbook exit,
   trigger, knowledge, coaching, custom instructions, action, persona,
   platform). "none" for a pass.
@@ -43,5 +44,6 @@ Open for the person: <the decision, with a recommendation and why>
 - Link conversations as `https://<instance>.ada.support/insights/conversations/<id>`.
 - The last line is the decision the person owes, or "none, ready for
   ada-promote-changeset" when every case passes.
+- Under a same-twice row, add a line: premise, the check run, its result.
 - After a stop without a pass, add a line: stopped at <reason>, what still
   fails, and the cause for each.

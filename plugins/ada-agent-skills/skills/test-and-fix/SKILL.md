@@ -6,7 +6,8 @@ description: >
   doc, or the approved design board. Runs
   every case, sends each failure to diagnose-conversation, stages fixes on a
   changeset, reruns the whole set, and stops at all-pass, after three rounds,
-  or when a fix changes the design. Use it for "test and fix this", "run the
+  when a case fails the same way twice, or when a fix changes the design.
+  Use it for "test and fix this", "run the
   tests and sort out the failures", "keep fixing until it passes", "this
   playbook is built, get it working", or when someone with an existing
   playbook shares one bad conversation. Do not use it to find out why one
@@ -155,6 +156,11 @@ Each round:
    A control that now fails got worse, so it goes first in the next round and
    the fix that caused it is withdrawn or reworked.
 
+   Compare each failure with the round before. A case that failed again after
+   a fix aimed at it, with the same owning surface and the same missing
+   behavior or judge reason, is **same twice**. It gets no third fix on that
+   diagnosis: see "Same failure twice" in step 5.
+
    When the answer is right in substance but fails on a literal word that the
    person's own criterion contains, treat it as a fix target first. If two
    rounds do not clear it, return the wording to the person.
@@ -179,6 +185,20 @@ Stop at the first of these and say which:
 - **Three rounds used.** Report what still fails, the cause for each, and what
   you would try next. Do not start a fourth round. Three rounds without a pass
   means the diagnosis or the design is wrong, and more patches will not help.
+- **Same failure twice.** This stops that case, not the loop. The two fixes
+  shared a premise and the evidence says it is wrong. Before any further fix
+  on the case:
+  1. Write the premise both fixes assumed in one sentence.
+  2. Run one check that would come out differently if the premise were false:
+     the reasoning log of the failing turn, the case on live without the
+     changeset, or which surface produced the reply.
+  3. Log the premise, the check and the result in the round log.
+  4. If the check contradicts the premise, send the case back to
+     diagnose-conversation with that evidence. If it confirms it, the fix
+     itself is wrong: return the case to the person.
+
+  Other cases continue under the three-round cap. If the
+  principle-attack-the-premise skill is installed, follow it for this step.
 - **A fix changes the design.** If the fix changes what the customer is asked,
   in what order, or what they get, or the use case's goal moved, stop. Return
   to design-conversation, so the person approves the new conversation. Internal

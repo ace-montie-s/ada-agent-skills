@@ -4,6 +4,11 @@ Each version has a section below. A push to `main` that changes the version
 creates a GitHub Release with that section as its notes. To get an email for
 each release, open the repo on GitHub, choose Watch, then Custom, then Releases.
 
+## 2026.11.17.2
+
+- test-and-fix stops fixing a case that fails the same way twice: same owning surface, same missing behavior, after a fix aimed at it. Before any further fix it writes down the premise both fixes shared, runs one check that would prove it false, and logs the result. Other cases continue under the three-round cap.
+- The round log gains a "same twice" kind and a premise line under it.
+
 ## 2026.11.17.1
 
 - Add a refute pass to test-and-fix: once every case passes, a fresh reviewer gets the raw diff, runs and reasoning logs and tries to break the fix. A BROKEN verdict counts as a failed round under the three-round cap. Issues the change did not introduce are reported as pre-existing and do not fail the round.
