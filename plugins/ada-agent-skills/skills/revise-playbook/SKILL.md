@@ -52,6 +52,10 @@ ends up patching a playbook nobody read.
 - If the playbook runs on voice (phone), load voice-playbook-builder for the voice checklist, patterns and sim testing.
 - Read the whole live playbook, and every playbook it runs or that routes
   into it. Read the live version, not a memory of it.
+- Read `../author-playbook/references/playbook-graph.md` and save the current
+  flow graph with node and edge tables. Review affected ASKs, retry/fallback
+  paths, variable consumers and parent/child boundaries before proposing a
+  fix. Keep confirmed failures separate from suspected weak nodes.
 - Load the saved test cases and keep every one that touches this use case.
   These are the regression set. They come first because new cases replace
   nothing. Do not regenerate them.
@@ -91,6 +95,9 @@ changes. Reuse existing authorization for the exact behavior already approved.
 ## 3. Rebuild the flow, then retest
 
 After Approve, follow author-playbook from step 2, with these differences:
+- Compare the proposed graph with today's graph. Refresh it from the staged
+  readback, link changed recovery paths to cases and record exercised and
+  untested edges. Graph findings do not expand the approved revision scope.
 - Rewrite the steps the design touches as a whole, so the playbook reads as
   if it was written this way from the start. Remove steps and rules that the
   new design no longer needs.

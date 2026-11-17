@@ -80,6 +80,11 @@ write "no control" in the hand-over counts.
 
 Read `references/safe-to-run.md` before the first run. A test run is a
 simulation, but some things in it still reach real systems.
+- Read `../author-playbook/references/playbook-graph.md`. Map the persisted
+  flow behind the anchor, including ASK retries, fallback consumers and child
+  returns. Save the graph, node/edge tables and weak-node review. Use them to
+  inspect reachable side effects and coverage gaps; graph risks do not
+  authorize extra runs or override the all-pass stop.
 - Walk each case's expected path. Name every tool it calls and every handoff
   it can reach.
 - Do not run a case that would open a real handoff to a live queue, or call a
@@ -116,6 +121,8 @@ Each round:
 1. **Diagnose.** Hand every failing case to diagnose-conversation and take back
    its diagnosis: the owning surface, the mechanism, the evidence. Group
    failures that share a cause, so one fix serves several cases.
+   Mark the failing path on the graph with trace evidence. A suspected weak
+   node is a diagnosis lead, not proof of a runtime failure or platform bug.
 2. **Choose the implementation.** Read
    `../author-playbook/references/implementation-strategy.md`. Assess knowledge,
    SET state, missing-input ASK, branching, code tools and reasoning level. Log
@@ -137,6 +144,8 @@ Each round:
      item. A config change cannot fix a broken endpoint.
    Confirm staging succeeded and read back the changed entities before spending
    runs. A rejected stage must not be followed by testing unchanged configuration.
+   Refresh the graph from that readback. After the authorized rerun, annotate
+   exercised edges and report unresolved risks, untested edges and held paths.
 3. **Show the diff and wait.** Show the platform's own before and after. The
    person approves each staged fix.
 4. **Rerun the whole anchor on the changeset**: every case that failed and

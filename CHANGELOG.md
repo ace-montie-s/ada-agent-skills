@@ -4,6 +4,11 @@ Each version has a section below. A push to `main` that changes the version
 creates a GitHub Release with that section as its notes. To get an email for
 each release, open the repo on GitHub, choose Watch, then Custom, then Releases.
 
+## 2026.11.18.1
+
+- Author, revise and test-and-fix now map playbook nodes and edges, including ASK retries, fallback consumers, variable state and parent/child boundaries.
+- Add a shared weak-node review that distinguishes trace-confirmed failures from suspected risks, checks safe recovery and links affected paths to test evidence without expanding approval or run budgets.
+
 ## 2026.11.17.2
 
 - test-and-fix stops fixing a case that fails the same way twice: same owning surface, same missing behavior, after a fix aimed at it. Before any further fix it writes down the premise both fixes shared, runs one check that would prove it false, and logs the result. Other cases continue under the three-round cap.

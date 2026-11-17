@@ -81,6 +81,9 @@ If the channel is voice (phone), load voice-playbook-builder for the voice check
 
 Read `references/implementation-strategy.md` first. Read the playbook authoring guide for platform detail (the runtime file
 says where it is). Then work from the design, not from the last comment:
+- Read `references/playbook-graph.md`. Save the proposed flow graph, node and
+  edge tables, and weak-node review before writing steps. Follow each ASK's
+  retry and fallback through its downstream consumers and child returns.
 - Map each bot turn to one step. One ASK collects one fact. When the board
   has a turn that lists several facts in one question (the person chose it),
   keep that wording in the first ASK and give each fact its own variable, so
@@ -123,6 +126,10 @@ sentence: "Adding 'also ask for the time' to the date question makes it ask
 two things at once. I've made the time its own question instead."
 
 ## 5. Stage, test, report. Every time.
+
+Refresh the graph from the persisted draft after staging. Link affected ASK
+paths to cases and annotate exercised edges after authorized tests, following
+`references/playbook-graph.md`. Report unresolved risks and untested edges.
 
 1. Stage it as a draft linked to the approved design (its `work` key). A
    draft with no approved design is not allowed. It needs no diagnosis: the
