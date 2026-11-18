@@ -4,6 +4,11 @@ Each version has a section below. A push to `main` that changes the version
 creates a GitHub Release with that section as its notes. To get an email for
 each release, open the repo on GitHub, choose Watch, then Custom, then Releases.
 
+## 2026.11.18.4
+
+- Add a standard-library Python converter for complete persisted V2 playbook exports. It produces Mermaid, matching node and edge tables, source metadata and structural findings, preserving nested branch rejoins, jumps and child call/return boundaries.
+- The shared graph review now uses the converter for persisted configuration. CLI and MCP runtime guides explain export, local execution and the manual fallback on hosts without Python. Unknown runtime behavior stays OPEN and generated edges remain UNTESTED.
+
 ## 2026.11.18.3
 
 - `check_ask_instructions.py` A3 no longer fails an instruction that says *not* to repeat the question, such as "Never repeat this question".
