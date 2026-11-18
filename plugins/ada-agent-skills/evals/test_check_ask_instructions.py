@@ -152,6 +152,22 @@ class RepeatTheQuestion(unittest.TestCase):
 
 
 class BareTrueFalse(unittest.TestCase):
+    def test_negative_condition_does_not_negate_output(self):
+        for text in ("If the customer does not confirm, write false.",
+                     "If they do not agree, output false."):
+            self.assertIn("A9", rules(instruction=text), text)
+
+    def test_unrelated_prohibition_does_not_negate_output(self):
+        for text in ("Do not ask again, write exactly true if they confirm.",
+                     "Never guess and output false if they decline."):
+            self.assertIn("A9", rules(instruction=text), text)
+
+    def test_directly_negated_output_passes(self):
+        for text in ("Do not output true or false.",
+                     "Don't ever write true in your reply.",
+                     "Never directly respond with false."):
+            self.assertNotIn("A9", rules(instruction=text), text)
+
     def test_write_the_word_is_flagged(self):
         for text in ("Write exactly true if they confirm the cancellation, otherwise false.",
                      "Respond with only 'false' when they say no.",

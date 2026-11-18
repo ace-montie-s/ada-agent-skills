@@ -56,6 +56,9 @@ VERBATIM = re.compile(
 BARE_WORD = re.compile(
     r"\b(write|output|return|respond with|reply with|answer with|print)\s+"
     r"(exactly\s+|only\s+|just\s+|the word\s+)?[\"'“‘`]?(true|false)\b", re.I)
+OUTPUT_NEGATION = re.compile(
+    r"\b(never|not|don't|do not|avoid|without)\s+"
+    r"(?:(?:ever|directly|explicitly|literally|actually)\s+)*$", re.I)
 NEGATION = re.compile(r"\b(never|not|don't|do not|avoid|without)\b[^.;:\n]*$", re.I)
 # Wording that removes the off-topic and Q&A controls for the step
 # (extraction_system.jinja, STEP-INSTRUCTION PRECEDENCE).
@@ -134,7 +137,7 @@ def asks_to_repeat(text):
 
 
 def says_bare_word(text):
-    return any(not NEGATION.search(text[:m.start()]) for m in BARE_WORD.finditer(text))
+    return any(not OUTPUT_NEGATION.search(text[:m.start()]) for m in BARE_WORD.finditer(text))
 
 
 def unguarded_actions(doc):
