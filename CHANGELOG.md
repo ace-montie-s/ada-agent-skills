@@ -4,6 +4,13 @@ Each version has a section below. A push to `main` that changes the version
 creates a GitHub Release with that section as its notes. To get an email for
 each release, open the repo on GitHub, choose Watch, then Custom, then Releases.
 
+## 2026.11.18.6
+
+- Include playbook prose and ASK lint checks plus semantic SEND/ASK/SET prompt review in focused health checks. Report lint execution status separately from state coverage and runtime evidence.
+- Add intent-specific state health review across playbook graphs, guidance, coaching, knowledge and actions. Compare required business states with implemented transitions, including scope, freshness, invalidation and uncertain operation outcomes.
+- Connect focused improve-agent reviews, conversation diagnosis, custom metric improvement and the shared author/revise/test graph workflow. Recommendations cover user, agent and developer experience, preserving evidence, acceptance and authorization boundaries.
+- Separate configured coverage from exercised behavior and structural findings from population-ranked metric claims. The graph converter remains a structural extractor, not an automatic semantic state detector.
+
 ## 2026.11.18.5
 
 - `check_ask_instructions.py` A4 flags an ASK that stores any reply again. Storing any reply is still a valid design, but a non-answer ("thanks, that's all", a bare "yes") is still classed `did_not_answer` and leaves the variable empty, so a later action with no `is null` check runs without it. The A4 line now says when the instruction stores any reply. build-pitfalls no longer lists "store any reply" as a fix.
