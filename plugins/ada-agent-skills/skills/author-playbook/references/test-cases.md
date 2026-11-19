@@ -41,8 +41,8 @@ Run every case on live only: `ada-test <instance> --cases <ids>` with no
 | Live result | What it means | What to do |
 |---|---|---|
 | Target fails | The case reproduces the problem | Keep it |
-| Target passes | The case is wrong, or the problem is not what you think | Read the conversation, fix the case or the diagnosis before building |
-| Control fails | A control is already broken or its wording is wrong | Fix the case, or take it out of the control set and say so |
+| Target passes | This run did not reproduce the reported problem | Review the test and the diagnosis before building |
+| Control fails | The baseline did not satisfy the check | Review the test failure and keep protected controls in the gate pending the owner's decision |
 
 If more than half the target cases already pass on live, stop. The change
 would have nothing to fix. Tell the person and go back to the diagnosis.
@@ -50,9 +50,8 @@ would have nothing to fix. Tell the person and go back to the diagnosis.
 ## 4. Read the result before you report it
 
 The same configuration gives a different verdict on borderline conversations
-about half the time. One run is not proof either way. A case that swings
-between runs is a sign its criterion is loose or wrong (section 7), not a
-fact about the bot to accept.
+about half the time. When results vary, compare the actual behavior and the
+judge's evidence to determine whether the agent, simulator, or grader varied.
 
 - **Pin test first.** After staging, run the single plainest target case on
   the draft: `ada-test <instance> --cases <one id> --changeset <id> --no-live`.
@@ -67,9 +66,9 @@ fact about the bot to accept.
 
 | Kind | Test | What to say |
 |---|---|---|
-| Got worse | Passed on live, fails on draft | The change did it. Look here first |
-| Same on live | Fails on both | Not the change. Report it as its own item and do not edit the draft for it |
-| Case wrong | The judge's reason contradicts the conversation, or the criterion cannot hold | Reword the case, name the old and new wording, rerun that case |
+| Got worse | Passed on live, fails on draft | Investigate first. Use the matched evidence to establish cause |
+| Same on live | Fails on both | Compare the mechanism on both arms before assigning cause |
+| Case wrong | Simulator, fixture, judge, or criterion undermines the run | Follow the test failure review |
 | Works in part | The draft fixes some turns, misses a branch, value, language or channel | Say which part is missing, then fix that part |
 | Not reached | The conversation never got to the changed step | Check routing and exits with `ada-why` first |
 
@@ -130,8 +129,8 @@ Before you trust a suite, check it:
    Both leaned the wrong way in this audit: one called almost every failure a
    real defect, the other called half of them met, including a bot that fell
    back to a topic menu three times. Use them to find what to read.
-4. Report two counts: failures that are real defects, and failures from
-   wording. Reword first, rerun, then judge the playbook.
+4. Report confirmed agent defects, test defects, and unresolved failures.
+   Review any wording repair before changing the case.
 5. Measure a wording fix by the failed checks on the criteria you edited, not
    by the number of runs that pass. In the audit, those criteria fell from 14
    to 4 failed checks of 22 on the draft, yet runs passing stayed at 58 of 88:
@@ -157,6 +156,10 @@ a typed "Show all my activity" read "show" as "show me how".
 
 ## 7. A fail at the end of a run is a finding
 
+Use the [test failure review](../../diagnose-conversation/references/test-failure-review.md)
+before acting on these findings. Its protected-case approval and release rules
+apply to every proposed edit or exclusion in this reference.
+
 Never close a failure as noise, flaky or non-determinism. Sort it:
 
 | Fail is | Evidence | Fix |
@@ -166,9 +169,8 @@ Never close a failure as noise, flaky or non-determinism. Sort it:
 | A blind check | The judge cannot see a button, card or picture | Add a fixed check |
 | The tester | The simulated member looped or skipped the question | Fix the script |
 
-A case that swings between runs has a loose rule first ("if it swings so
-much, chances are it's our test criteria", the owner, 04/11/2026). Allow
-flexibility: no exact 1:1 reply, as long as the points are captured. A correct
+Allow wording flexibility when the approved outcome is about meaning. Keep
+exact wording when the approved outcome requires it. A correct
 answer without the return to the task is a failed check, not a pass by
 comment. A case never counts as passed by default or because it was not run.
 Report counts by kind, and take no rate such as "1 in 5" as acceptable without

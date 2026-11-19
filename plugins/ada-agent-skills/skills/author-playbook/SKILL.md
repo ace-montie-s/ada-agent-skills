@@ -68,9 +68,9 @@ Before you write a step:
    types a clean opener, so only these cases reach the paths a human takes.
    Write criteria for the turn after the ask, and name the surface that must
    answer (playbook step or router, not a custom instruction).
-3. Run every case on live only before you build. A target case that passes on
-   live is a wrong case or a wrong diagnosis: fix it now. If more than half
-   the targets already pass, stop and say so.
+3. Run every case on live only before you build. When a target passes, review
+   the test and diagnosis before editing either. If more than half the targets
+   already pass, stop and say so. Keep any known candidate failure open.
 4. Record the use case so the next session reuses it: its key, the playbook
    names once they exist, and the case ids. Record it again when the
    playbook names are known.
@@ -146,14 +146,16 @@ paths to cases and annotate exercised edges after authorized tests, following
 2. Check routing for every case's opening message against the draft. Fix
    routing before running full cases.
 3. Pin test: run the plainest target case on the draft alone. If it fails the
-   way live did, the edit is not working. Find the step setting that decided
-   the outcome and fix it before you run anything else. Rule text in an
+   way live did, review the failure before making another edit. When the
+   trace confirms a step setting decided the outcome, fix that setting. Rule text in an
    instruction does not override a saved value, a fallback, an
    accepted-values list or a stay-in-playbook setting.
 4. Run every case on the draft and on live. Sort each failure with the table
    in `references/test-cases.md`: got worse, same on live, case wrong, works
-   in part, not reached. Fix a wrong case by rewording it and rerunning that
-   case. Show the results as the required last message: one row per case,
+   in part, not reached. Follow the
+   [test failure review](../diagnose-conversation/references/test-failure-review.md)
+   before changing the agent or a case. Show the results as the required last
+   message: one row per case,
    with live, draft, a one-line note and a link to each conversation, plus
    counts by kind ("targets fixed 4 of 6, controls worse 0 of 8").
 5. Compare the draft conversations with the approved board. Say plainly where

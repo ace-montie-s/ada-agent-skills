@@ -59,6 +59,11 @@ tools folder are the signs. Then:
 
 ## 2. Check the surfaces in this order
 
+For a failed test, complete [the test failure review](references/test-failure-review.md)
+before assigning an agent surface or recommending a fix. Its approval and gate
+rules also apply in unattended mode. Continue the surface diagnosis for any
+agent behavior the evidence supports.
+
 Stop at the first one that explains the symptom, but still rule out two more.
 
 1. **Did it leave the playbook?** An exit, a switch to another playbook, an

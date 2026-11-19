@@ -71,10 +71,10 @@ Then treat it as a one-case anchor.
 **Controls.** Every anchor path needs at least one control: a case from a
 nearby use case that must not change, so a fix cannot quietly break its
 neighbours. Ask the person for candidates or look for saved cases nearby. Run
-each candidate with the baseline in step 3 and keep only those that pass in a
-run made today. Drop any that fail. An old passing run is not evidence, because
-the agent may have changed since. If none pass, say so, run without one, and
-write "no control" in the hand-over counts.
+each proposed control with the baseline in step 3. Add those that pass today.
+Keep existing protected controls in the gate, including any that fail on the
+baseline, and review their failures. If no control passes, report that in the
+hand-over counts.
 
 ## 2. Check each case is safe and sound
 
@@ -105,9 +105,11 @@ simulation, but some things in it still reach real systems.
 
 Run every safe case on live before any change. State the number of runs and
 the quota left, and run only when the person says yes.
-- Failing cases are the targets. Passing cases are the controls.
-- Every case passes: say so and stop. There is nothing to fix. A case that
-  passes today is either wrong or already fixed.
+- Keep each case's intended role. Review failed baseline runs before using them
+  as evidence of an agent defect.
+- If every baseline case passes and there is no known candidate failure,
+  report that the baseline did not reproduce the issue and stop. If a candidate
+  already failed, review its evidence against the baseline before a fix.
 - More than half the cases the person called broken pass on live: the cases or
   the complaint are off. Stop and ask the person.
 
@@ -118,9 +120,12 @@ that contradicts its own transcript gets one rerun before you act on it.
 
 Each round:
 
-1. **Diagnose.** Hand every failing case to diagnose-conversation and take back
-   its diagnosis: the owning surface, the mechanism, the evidence. Group
-   failures that share a cause, so one fix serves several cases.
+1. **Diagnose.** Start every failure with the
+   [test failure review](../diagnose-conversation/references/test-failure-review.md).
+   Diagnose supported agent behavior with diagnose-conversation and record the
+   owning surface, mechanism, and evidence. Draft test repairs for review. Keep
+   an OPEN case visible and stop edits aimed at it until the evidence identifies
+   what to fix. Group failures that share a cause, so one fix serves several cases.
    Mark the failing path on the graph with trace evidence. A suspected weak
    node is a diagnosis lead, not proof of a runtime failure or platform bug.
 2. **Choose the implementation.** Read
@@ -156,23 +161,22 @@ Each round:
      evidence and a matched rerun establish whether the change caused it.
    - Same on live: fails on both. An anchored target remains a fix target.
      An unrelated pre-existing failure is recorded separately and does not expand scope.
-   - Case wrong: the judge's reason contradicts the transcript, or the criterion
-     cannot hold. The person decides on rewording.
+   - Case wrong: the simulator, fixture, grader, or criterion undermines the
+     run. Follow the test failure review for evidence, comparison, and approval.
    - Works in part: some turns, branches or criteria now pass. Say which part is
      missing and fix that part.
    - Not reached: the run never got to the changed step. Check routing and exits.
 
-   A control that now fails got worse, so it goes first in the next round and
-   the fix that caused it is withdrawn or reworked.
+   Investigate a newly failing control first. Withdraw or rework an agent
+   change when the comparison supports it as the cause.
 
    Compare each failure with the round before. A case that failed again after
    a fix aimed at it, with the same owning surface and the same missing
    behavior or judge reason, is **same twice**. It gets no third fix on that
    diagnosis: see "Same failure twice" in step 5.
 
-   When the answer is right in substance but fails on a literal word that the
-   person's own criterion contains, treat it as a fix target first. If two
-   rounds do not clear it, return the wording to the person.
+   When a substantive answer fails a literal-word check, compare the criterion
+   with the approved outcome before choosing a fix.
 
    Scan every finished transcript, baseline included, for a handoff or
    handoff-triage playbook that the simulated customer reached in a later turn.

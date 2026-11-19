@@ -33,6 +33,12 @@ Each step below names what to do, not a command. Read one file for how:
 - A green table with zero cases means nothing was tested. Say that instead of
   "passed".
 - A case that fails on draft and passed on live is a regression. List it first.
+- Identify the required acceptance and release gates. Verify each gate passed
+  for the intended candidate and approved case revisions before recommending
+  promotion or live rollout. If a required verdict is failed, stale, or missing,
+  stop the release path and use the
+  [test failure review](../diagnose-conversation/references/test-failure-review.md)
+  for failed cases. Focused reruns and approval to promote leave these gates in force.
 
 ## 2. Show the real diff
 
